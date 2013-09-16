@@ -22,7 +22,6 @@
     "grunt-contrib-jshint": "~0.4.3"
   },
   "dependencies": {
-    "handlebars": "~1.0.10",
-    "split": "~0.2.10"
+    "handlebars": "~1.0.10"
   }
 }
