@@ -1,0 +1,28 @@
+{
+  "name": "yui-combo-decoder",
+  "version": "1.0.0",
+  "description": "Decode combo requests",
+  "author": "Eugene Kashida <ekashida@gmail.com>",
+  "main": "index.js",
+  "scripts": {
+    "lint": "grunt jshint",
+    "test": "vows --spec ./test/*.js ./test/*/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ekashida/yui-combo-decoder.git"
+  },
+  "devDependencies": {
+    "yui-lint": "~0.1.1",
+    "istanbul": "~0.1.34",
+    "vows": "~0.7.0",
+    "mockery": "~1.4.0",
+    "grunt": "~0.4.1",
+    "grunt-cli": "~0.1.7",
+    "grunt-contrib-jshint": "~0.4.3"
+  },
+  "dependencies": {
+    "handlebars": "~1.0.10",
+    "split": "~0.2.10"
+  }
+}
