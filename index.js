@@ -18,7 +18,7 @@ exports.createComposite = function () {
 
     args.forEach(function (arg) {
         if (Array.isArray(arg)) {
-            handlers.concat(arg);
+            handlers = handlers.concat(arg);
         } else {
             handlers.push(arg);
         }
