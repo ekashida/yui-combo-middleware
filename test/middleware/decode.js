@@ -13,15 +13,13 @@ function generateMock () {
     };
 }
 
-var config = {
-    strategy: {
-        decode: function (o, callback) {
-            callback(null, {
-                groups: [o.path, o.query, 'groups'].join('+'),
-                type:   [o.path, o.query, 'type'].join('+'),
-                filter: [o.path, o.query, 'filter'].join('+')
-            });
-        }
+var strategy = {
+    decode: function (o, callback) {
+        callback(null, {
+            groups: [o.path, o.query, 'groups'].join('+'),
+            type:   [o.path, o.query, 'type'].join('+'),
+            filter: [o.path, o.query, 'filter'].join('+')
+        });
     }
 };
 
@@ -33,7 +31,7 @@ suite.addBatch({
             mock.req.query = 'query';
 
             return {
-                middleware: mid(config),
+                middleware: mid(strategy),
                 mock: mock
             };
         },
