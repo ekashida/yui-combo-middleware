@@ -32,7 +32,8 @@ function generateMocks () {
     return {
         req: {},
         res: {
-            locals: {}
+            locals: {},
+            setHeader: function () {}
         }
     };
 }

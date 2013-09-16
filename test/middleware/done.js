@@ -145,14 +145,6 @@ suite.addBatch({
             middleware(req, res, next);
             assert(res.Expires);
         },
-        'the x-esi header is set': function (o) {
-            var middleware = o.middleware,
-                req = o.mock.req,
-                res = o.mock.res;
-
-            middleware(req, res, next);
-            assert(res['X-Esi']);
-        },
         'the vary header is set': function (o) {
             var middleware = o.middleware,
                 req = o.mock.req,
