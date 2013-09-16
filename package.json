@@ -1,7 +1,7 @@
 {
-  "name": "yui-combo-decoder",
-  "version": "1.0.0",
-  "description": "Decode combo requests",
+  "name": "yui-combo-middleware",
+  "version": "0.1.0",
+  "description": "Middleware used to decode combo requests",
   "author": "Eugene Kashida <ekashida@gmail.com>",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/ekashida/yui-combo-decoder.git"
+    "url": "git://github.com/ekashida/yui-combo-middleware.git"
   },
   "devDependencies": {
     "yui-lint": "~0.1.1",
