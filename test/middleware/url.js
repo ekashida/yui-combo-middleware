@@ -2,113 +2,279 @@ var vows    = require('vows');
 var assert  = require('assert');
 var mockery = require('mockery');
 var suite   = vows.describe('middleware-url');
-var next    = function () {};
 
-mockery.registerMock('../dedupe', function (things) {
-    return things;
+var next = function () {},
+    req,
+    res;
+
+mockery.registerMock('../utils', {
+    dedupe: function (arr) { return arr; }
 });
 
-mockery.registerMock('../url-yui', function () {
-    return function (mods) {
-        var out = [];
-
-        if (!mods) {
+mockery.registerMock('../yui-path', {
+    format: function () {
+        if (arguments[1] === 'fail') {
             return new Error();
+        } else {
+            return Array.prototype.slice.apply(arguments).join('/');
         }
-
-        mods.forEach(function (mod) {
-            out.push('http://example.com/' + mod);
-        });
-
-        return out;
-    };
+    }
 });
 
 mockery.enable({ useCleanCache: true });
+mockery.registerAllowable('url', true);
 mockery.registerAllowable('../../lib/middleware/url', true);
 var mid = require('../../lib/middleware/url');
 mockery.disable();
 
-function generateMocks () {
-    return {
-        req: {},
-        res: {
-            locals: {}
-        }
-    };
-}
-
 suite.addBatch({
-    'given an array of valid module metadata': {
+    'given a middleware with default configuration': {
         topic: function () {
-            var mock = generateMocks();
-
-            mock.res.locals.groups = [
-                {
-                    modules: ['foo', 'bar'],
-                    name: 'core'
-                },
-                {
-                    modules: ['baz', 'bif'],
-                    name: 'gallery'
-                },
-                {
-                    modules: ['tora', 'maru'],
-                    name: 'app'
-                }
-            ];
-
-            return {
-                middleware: mid({}),
-                mock: mock
-            };
+            return mid();
         },
-        'all modules are passed through a formatter': function (o) {
-            var middleware = o.middleware,
-                req = o.mock.req,
-                res = o.mock.res;
+        '(non-secure) the base defaults to the yui cdn base': function (middleware) {
+            req = {};
+            res = {
+                locals: {
+                    filter: 'filter',
+                    type: 'type',
+                    groups: [{
+                        name: 'core',
+                        version: '3.12.0',
+                        modules: ['hoge', 'piyo']
+                    }]
+                }
+            };
 
             middleware(req, res, next);
 
-            assert.equal(res.locals.urls.length, 6);
+            assert.equal(res.locals.urls.length, 2);
             assert.deepEqual(res.locals.urls, [
-                'http://example.com/foo',
-                'http://example.com/bar',
-                'http://example.com/baz',
-                'http://example.com/bif',
-                'http://example.com/tora',
-                'http://example.com/maru'
+                'http://yui.yahooapis.com/3.12.0/hoge/filter/type',
+                'http://yui.yahooapis.com/3.12.0/piyo/filter/type'
             ]);
-        }
-    },
-    'given an array that includes invalid module metadata': {
-        topic: function () {
-            var mock = generateMocks();
-
-            mock.res.locals.groups = [
-                {
-                    modules: ['foo', 'bar'],
-                    name: 'invalid!'
-                },
-                {
-                    modules: ['tora', 'maru'],
-                    name: 'app'
-                }
-            ];
-
-            return {
-                middleware: mid({}),
-                mock: mock
-            };
         },
-        'an error should be passed to next()': function (o) {
-            var middleware = o.middleware,
-                req = o.mock.req,
-                res = o.mock.res;
+        'an error is passed if the path formatter fails': function (middleware) {
+            req = {};
+            res = {
+                locals: {
+                    filter: 'filter',
+                    type: 'type',
+                    groups: [{
+                        name: 'core',
+                        version: '3.12.0',
+                        modules: ['fail'] // simulate a failure
+                    }]
+                }
+            };
 
             middleware(req, res, function (err) {
                 assert(err instanceof Error);
             });
+        }
+    },
+    'given a middleware configured with a `yuiBase` that is not the default': {
+        topic: function () {
+            return mid({
+                yuiBase: 'http://yuibase.com/'
+            });
+        },
+        '(non-secure) the base is set to the value of `yuiBase`': function (middleware) {
+            req = {};
+            res = {
+                locals: {
+                    filter: 'filter',
+                    type: 'type',
+                    groups: [{
+                        name: 'core',
+                        version: '3.12.0',
+                        modules: ['hoge', 'piyo']
+                    }]
+                }
+            };
+
+            middleware(req, res, next);
+
+            assert.equal(res.locals.urls.length, 2);
+            assert.deepEqual(res.locals.urls, [
+                'http://yuibase.com/3.12.0/hoge/filter/type',
+                'http://yuibase.com/3.12.0/piyo/filter/type'
+            ]);
+        },
+        '(secure) the base is set to the value of `yuiBase`': function (middleware) {
+            req = { comboSecure: true };
+            res = {
+                locals: {
+                    filter: 'filter',
+                    type: 'type',
+                    groups: [{
+                        name: 'core',
+                        version: '3.12.0',
+                        modules: ['hoge', 'piyo']
+                    }]
+                }
+            };
+
+            middleware(req, res, next);
+
+            assert.equal(res.locals.urls.length, 2);
+            assert.deepEqual(res.locals.urls, [
+                'http://yuibase.com/3.12.0/hoge/filter/type',
+                'http://yuibase.com/3.12.0/piyo/filter/type'
+            ]);
+        }
+    },
+    'given a middleware configured with a secure base': {
+        topic: function () {
+            return mid({
+                yuiBase: 'http://yuibase.com/',
+                yuiBaseSecure: 'https://yuibasesecure.com/'
+            });
+        },
+        '(non-secure) the base is set to the value of `yuiBase`': function (middleware) {
+            req = {};
+            res = {
+                locals: {
+                    filter: 'filter',
+                    type: 'type',
+                    groups: [{
+                        name: 'core',
+                        version: '3.12.0',
+                        modules: ['hoge', 'piyo']
+                    }]
+                }
+            };
+
+            middleware(req, res, next);
+
+            assert.equal(res.locals.urls.length, 2);
+            assert.deepEqual(res.locals.urls, [
+                'http://yuibase.com/3.12.0/hoge/filter/type',
+                'http://yuibase.com/3.12.0/piyo/filter/type'
+            ]);
+        },
+        '(secure) the base is set to the value of `yuiBaseSecure`': function (middleware) {
+            req = { comboSecure: true };
+            res = {
+                locals: {
+                    filter: 'filter',
+                    type: 'type',
+                    groups: [{
+                        name: 'core',
+                        version: '3.12.0',
+                        modules: ['hoge', 'piyo']
+                    }]
+                }
+            };
+
+            middleware(req, res, next);
+
+            assert.equal(res.locals.urls.length, 2);
+            assert.deepEqual(res.locals.urls, [
+                'https://yuibasesecure.com/3.12.0/hoge/filter/type',
+                'https://yuibasesecure.com/3.12.0/piyo/filter/type'
+            ]);
+        }
+    },
+    'given a middleware configured with just an `appBase`': {
+        topic: function () {
+            return mid({
+                appBase: 'http://appbase.com/'
+            });
+        },
+        '(non-secure) the base is set to the value of `appBase`': function (middleware) {
+            req = {};
+            res = {
+                locals: {
+                    filter: 'filter',
+                    type: 'type',
+                    groups: [{
+                        name: 'app',
+                        version: 'foo-bar',
+                        modules: ['baz']
+                    }]
+                }
+            };
+
+            middleware(req, res, next);
+
+            assert.equal(res.locals.urls.length, 1);
+            assert.deepEqual(res.locals.urls, [
+                'http://appbase.com/foo-bar/baz/filter/type'
+            ]);
+        },
+        '(secure) the base is set to the value of `appBase`': function (middleware) {
+            req = { comboSecure: true };
+            res = {
+                locals: {
+                    filter: 'filter',
+                    type: 'type',
+                    groups: [{
+                        name: 'app',
+                        version: 'foo-bar',
+                        modules: ['baz']
+                    }]
+                }
+            };
+
+            middleware(req, res, next);
+
+            assert.equal(res.locals.urls.length, 1);
+            assert.deepEqual(res.locals.urls, [
+                'http://appbase.com/foo-bar/baz/filter/type'
+            ]);
+        }
+    },
+    'given a middleware configured with both `appBase` and `appBaseSecure`': {
+        topic: function () {
+            return mid({
+                appBase: 'http://appbase.com/',
+                appBaseSecure: 'https://appbasesecure.com/'
+            });
+        },
+        '(non-secure) the base is set to the value of `appBase`': function (middleware) {
+            req = {};
+            res = {
+                locals: {
+                    filter: 'filter',
+                    type: 'type',
+                    groups: [{
+                        name: 'app',
+                        version: '4.0.0',
+                        modules: ['hoge', 'piyo']
+                    }]
+                }
+            };
+
+            middleware(req, res, next);
+
+            assert.equal(res.locals.urls.length, 2);
+            assert.deepEqual(res.locals.urls, [
+                'http://appbase.com/4.0.0/hoge/filter/type',
+                'http://appbase.com/4.0.0/piyo/filter/type'
+            ]);
+        },
+        '(secure) the base is set to the value of `appBaseSecure`': function (middleware) {
+            req = { comboSecure: true };
+            res = {
+                locals: {
+                    filter: 'filter',
+                    type: 'type',
+                    groups: [{
+                        name: 'app',
+                        version: '3.12.0',
+                        modules: ['hoge', 'piyo']
+                    }]
+                }
+            };
+
+            middleware(req, res, next);
+
+            assert.equal(res.locals.urls.length, 2);
+            assert.deepEqual(res.locals.urls, [
+                'https://appbasesecure.com/3.12.0/hoge/filter/type',
+                'https://appbasesecure.com/3.12.0/piyo/filter/type'
+            ]);
         }
     }
 });
