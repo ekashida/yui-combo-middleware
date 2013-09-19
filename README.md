@@ -4,9 +4,9 @@
 
 ## Overview
 
-This package is a bundle of middleware which can be used to decode YUI modules
-from custom combo urls. It is compatible with both Connect and Express-based
-applications.
+This package is a bundle of middleware which can be used to decode custom combo
+urls which represent a set of YUI modules. It is compatible with both Connect
+and Express-based applications.
 
 ## Usage
 
