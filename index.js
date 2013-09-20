@@ -2,6 +2,7 @@ exports.init        = require('./lib/middleware/init');
 exports.context     = require('./lib/middleware/context');
 exports.decode      = require('./lib/middleware/decode');
 exports.validate    = require('./lib/middleware/validate');
+exports.path        = require('./lib/middleware/path');
 exports.url         = require('./lib/middleware/url');
 exports.esi         = require('./lib/middleware/esi');
 exports.done        = require('./lib/middleware/done');
@@ -45,6 +46,7 @@ exports.createComposite = function () {
 /**
 Middleware that decodes combo urls into ESI documents.
 @method decodeToESI
+@param {Object} strategy Decoding strategy.
 @param {Object} config Configuration object.
 @return {Function} Composite middleware that decodes combo urls into ESI docs.
 **/
