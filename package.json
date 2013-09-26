@@ -22,6 +22,7 @@
     "grunt-contrib-jshint": "~0.4.3"
   },
   "dependencies": {
-    "handlebars": "~1.0.10"
+    "handlebars": "~1.0.10",
+    "yui-pathogen-decoder": "~0.1.0"
   }
 }

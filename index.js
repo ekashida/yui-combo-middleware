@@ -50,11 +50,11 @@ Middleware that decodes combo urls into ESI documents.
 @param {Object} config Configuration object.
 @return {Function} Composite middleware that decodes combo urls into ESI docs.
 **/
-exports.decodeToESI = function (strategy, config) {
+exports.decodeToESI = function (config) {
     return exports.createComposite([
         exports.init(config),
         exports.context(config),
-        exports.decode(strategy, config),
+        exports.decode(config),
         exports.validate(config),
         exports.url(config),
         exports.esi(config),

@@ -31,7 +31,7 @@ suite.addBatch({
             mock.req.query = 'query';
 
             return {
-                middleware: mid(strategy),
+                middleware: mid({ strategy: strategy }),
                 mock: mock
             };
         },
