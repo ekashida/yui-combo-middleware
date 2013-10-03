@@ -276,6 +276,51 @@ suite.addBatch({
                 'https://appbasesecure.com/3.12.0/piyo/filter/type'
             ]);
         }
+    },
+    'given a middleware configured with both `appBase` and `yuiBase`': {
+        topic: function () {
+            return mid({
+                appBase: 'http://appbase.com/',
+                yuiBase: 'https://yuibase.com/'
+            });
+        },
+        'path module groups are decoded as expected': function (middleware) {
+            req = {};
+            res = {
+                locals: {
+                    filter: 'filter',
+                    type: 'type',
+                    groups: [
+                        {
+                            name: 'path',
+                            modules: ['kamen/rider/wizard-min']
+                        },
+                        {
+                            name: 'path',
+                            modules: ['kamen/rider/fourze']
+                        },
+                        {
+                            name: 'path',
+                            modules: ['kamen/rider/w-debug']
+                        },
+                        {
+                            name: 'path',
+                            modules: ['kamen/rider/o-s']
+                        }
+                    ]
+                }
+            };
+
+            middleware(req, res, next);
+
+            assert.equal(res.locals.urls.length, 4);
+            assert.deepEqual(res.locals.urls, [
+                'http://appbase.com/kamen/rider/wizard-min.type',
+                'http://appbase.com/kamen/rider/fourze.type',
+                'http://appbase.com/kamen/rider/w-debug.type',
+                'http://appbase.com/kamen/rider/o-s.type',
+            ]);
+        }
     }
 });
 
