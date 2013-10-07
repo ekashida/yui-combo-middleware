@@ -63,17 +63,31 @@ suite.addBatch({
     'given path components of a lang pack': {
         topic: function () {
             return [
+                yuiPath.format('3.12.0', 'lang/foo_sr-Latn-RS', 'min', 'js'),
+                yuiPath.format('3.12.0', 'lang/foo_es-419', 'min', 'js'),
+                yuiPath.format('3.12.0', 'lang/foo_de-CH-1996', 'min', 'js'),
+                yuiPath.format('3.12.0', 'lang/foo_i-klingon', 'min', 'js'),
+                yuiPath.format('3.12.0', 'lang/foo_x-fr-CH', 'min', 'js'),
+                yuiPath.format('3.12.0', 'lang/autocomplete-list', 'min', 'js'),
                 yuiPath.format('3.12.0', 'lang/baz-bif_en', 'min', 'js'),
                 yuiPath.format('3.12.0', 'lang/piyo-hoge-fuga_ja-JP', 'min', 'js'),
                 yuiPath.format('3.12.0', 'lang/has_underscore_in_name_es', 'min', 'js'),
+                yuiPath.format('3.12.0', 'lang/has_underscore_in_name', 'min', 'js'),
                 yuiPath.format('3.12.0', 'lang/ni-hao_zh-Hans-CN', 'min', 'js')
             ];
         },
         'the paths are formatted as expected': function (paths) {
             assert.deepEqual(paths, [
+                '3.12.0/foo/lang/foo_sr-Latn-RS.js',
+                '3.12.0/foo/lang/foo_es-419.js',
+                '3.12.0/foo/lang/foo_de-CH-1996.js',
+                '3.12.0/foo/lang/foo_i-klingon.js',
+                '3.12.0/foo/lang/foo_x-fr-CH.js',
+                '3.12.0/autocomplete-list/lang/autocomplete-list.js',
                 '3.12.0/baz-bif/lang/baz-bif_en.js',
                 '3.12.0/piyo-hoge-fuga/lang/piyo-hoge-fuga_ja-JP.js',
                 '3.12.0/has_underscore_in_name/lang/has_underscore_in_name_es.js',
+                '3.12.0/has_underscore_in_name/lang/has_underscore_in_name.js',
                 '3.12.0/ni-hao/lang/ni-hao_zh-Hans-CN.js'
             ]);
         }
