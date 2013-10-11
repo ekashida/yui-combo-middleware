@@ -189,7 +189,7 @@ suite.addBatch({
                     filter: 'filter',
                     type: 'type',
                     groups: [{
-                        name: 'app',
+                        name: 'root',
                         version: 'foo-bar',
                         modules: ['baz']
                     }]
@@ -210,7 +210,7 @@ suite.addBatch({
                     filter: 'filter',
                     type: 'type',
                     groups: [{
-                        name: 'app',
+                        name: 'root',
                         version: 'foo-bar',
                         modules: ['baz']
                     }]
@@ -239,7 +239,7 @@ suite.addBatch({
                     filter: 'filter',
                     type: 'type',
                     groups: [{
-                        name: 'app',
+                        name: 'root',
                         version: '4.0.0',
                         modules: ['hoge', 'piyo']
                     }]
@@ -261,7 +261,7 @@ suite.addBatch({
                     filter: 'filter',
                     type: 'type',
                     groups: [{
-                        name: 'app',
+                        name: 'root',
                         version: '3.12.0',
                         modules: ['hoge', 'piyo']
                     }]
@@ -285,6 +285,32 @@ suite.addBatch({
             });
         },
         'path module groups are decoded as expected': function (middleware) {
+            req = {};
+            res = {
+                locals: {
+                    filter: 'filter',
+                    type: 'type',
+                    groups: [
+                        {
+                            name: 'path',
+                            version: 'kamen/rider',
+                            modules: ['wizard-min', 'fourze', 'w-debug', 'o-s']
+                        }
+                    ]
+                }
+            };
+
+            middleware(req, res, next);
+
+            assert.equal(res.locals.urls.length, 4);
+            assert.deepEqual(res.locals.urls, [
+                'http://appbase.com/kamen/rider/wizard-min.type',
+                'http://appbase.com/kamen/rider/fourze.type',
+                'http://appbase.com/kamen/rider/w-debug.type',
+                'http://appbase.com/kamen/rider/o-s.type',
+            ]);
+        },
+        'deprecated path module groups are decoded as expected': function (middleware) {
             req = {};
             res = {
                 locals: {
