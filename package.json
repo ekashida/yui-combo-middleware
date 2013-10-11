@@ -23,6 +23,6 @@
   },
   "dependencies": {
     "handlebars": "~1.0.10",
-    "yui-pathogen-decoder": "~0.1.1"
+    "yui-pathogen-decoder": "~0.1.2"
   }
 }
