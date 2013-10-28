@@ -50,8 +50,8 @@ suite.addBatch({
 
             assert.equal(res.locals.urls.length, 2);
             assert.deepEqual(res.locals.urls, [
-                'http://yui.yahooapis.com/3.12.0/hoge/filter/type',
-                'http://yui.yahooapis.com/3.12.0/piyo/filter/type'
+                'http://yui.yahooapis.com/3.12.0/build/hoge/filter/type',
+                'http://yui.yahooapis.com/3.12.0/build/piyo/filter/type'
             ]);
         },
         'an error is passed if the path formatter fails': function (middleware) {
@@ -97,8 +97,8 @@ suite.addBatch({
 
             assert.equal(res.locals.urls.length, 2);
             assert.deepEqual(res.locals.urls, [
-                'http://yuibase.com/3.12.0/hoge/filter/type',
-                'http://yuibase.com/3.12.0/piyo/filter/type'
+                'http://yuibase.com/3.12.0/build/hoge/filter/type',
+                'http://yuibase.com/3.12.0/build/piyo/filter/type'
             ]);
         },
         '(secure) the base is set to the value of `yuiBase`': function (middleware) {
@@ -119,8 +119,8 @@ suite.addBatch({
 
             assert.equal(res.locals.urls.length, 2);
             assert.deepEqual(res.locals.urls, [
-                'http://yuibase.com/3.12.0/hoge/filter/type',
-                'http://yuibase.com/3.12.0/piyo/filter/type'
+                'http://yuibase.com/3.12.0/build/hoge/filter/type',
+                'http://yuibase.com/3.12.0/build/piyo/filter/type'
             ]);
         }
     },
@@ -149,8 +149,8 @@ suite.addBatch({
 
             assert.equal(res.locals.urls.length, 2);
             assert.deepEqual(res.locals.urls, [
-                'http://yuibase.com/3.12.0/hoge/filter/type',
-                'http://yuibase.com/3.12.0/piyo/filter/type'
+                'http://yuibase.com/3.12.0/build/hoge/filter/type',
+                'http://yuibase.com/3.12.0/build/piyo/filter/type'
             ]);
         },
         '(secure) the base is set to the value of `yuiBaseSecure`': function (middleware) {
@@ -171,8 +171,8 @@ suite.addBatch({
 
             assert.equal(res.locals.urls.length, 2);
             assert.deepEqual(res.locals.urls, [
-                'https://yuibasesecure.com/3.12.0/hoge/filter/type',
-                'https://yuibasesecure.com/3.12.0/piyo/filter/type'
+                'https://yuibasesecure.com/3.12.0/build/hoge/filter/type',
+                'https://yuibasesecure.com/3.12.0/build/piyo/filter/type'
             ]);
         }
     },
