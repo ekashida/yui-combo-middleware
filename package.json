@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "grunt jshint",
-    "test": "vows --spec ./test/*.js ./test/*/*.js"
+    "test": "vows --spec ./test/utils.js ./test/yui-path.js ./test/middleware/*.js && mocha ./test/pathogen-decoder.js"
   },
   "repository": {
     "type": "git",
@@ -16,13 +16,13 @@
     "yui-lint": "~0.1.1",
     "istanbul": "~0.1.34",
     "vows": "~0.7.0",
+    "mocha": "~1.8.2",
     "mockery": "~1.4.0",
     "grunt": "~0.4.1",
     "grunt-cli": "~0.1.7",
     "grunt-contrib-jshint": "~0.4.3"
   },
   "dependencies": {
-    "handlebars": "~1.0.10",
-    "yui-pathogen-decoder": "~0.1.2"
+    "handlebars": "~1.0.10"
   }
 }

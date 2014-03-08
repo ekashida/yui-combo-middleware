@@ -89,7 +89,7 @@ suite.addBatch({
             mock.res.locals.groups = [{
                 modules: ['foo', 'bar'],
                 name: 'core',
-                version: '4.0.0'
+                version: '3.0'
             }];
 
             return {
