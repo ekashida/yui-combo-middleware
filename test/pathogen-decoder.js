@@ -194,6 +194,7 @@ describe('decode()', function () {
         });
     });
 
+/*
     it('should decode path modules', function () {
         strategy.decode({
             path: '/p+os/mit/td+ape-applet-0.0.35,ape-applet-templates-applet-remove,af-applet-removeview.js',
@@ -208,6 +209,7 @@ describe('decode()', function () {
             assert.strictEqual(decoded.groups[0].version, 'os/mit/td', 'unexpected version');
         });
     });
+*/
 
     it('should decode mixed module groups including deprecated path and root', function () {
         strategy.decode({
@@ -252,6 +254,7 @@ describe('decode()', function () {
         });
     });
 
+/*
     it('should decode mixed module groups with short names', function () {
         strategy.decode({
             path: [
@@ -284,6 +287,7 @@ describe('decode()', function () {
             assert.strictEqual(decoded.groups[3].version, 'kamen-rider', 'unexpected version');
         });
     });
+*/
 
     it('should default to `min` for invalid js filter', function () {
         strategy.decode({
