@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "grunt jshint",
-    "test": "vows --spec ./test/utils.js ./test/yui-path.js ./test/middleware/*.js && mocha ./test/pathogen-decoder.js"
+    "test": "vows --spec ./test/*.js ./test/middleware/*.js"
   },
   "repository": {
     "type": "git",
