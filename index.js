@@ -4,20 +4,6 @@
  * http://yuilibrary.com/license/
  */
 
-/**
-Initializes the request in a way similar to Express. Only useful for
-Connect-based apps.
-@return {Object} req.query
-@return {String} req.path
-@return {Object} req.locals
-**/
-exports.init = require('./lib/middleware/init');
-
-/**
-Contextualization middleware
-@return {Boolean} req.comboSecure
-**/
-exports.context = require('./lib/middleware/context');
 
 /**
 Middleware to decode the combo url
@@ -35,13 +21,6 @@ Validation middleware
 exports.validate = require('./lib/middleware/validate');
 
 /**
-Transform modules into paths
-@param {Array} res.locals.groups
-@return {Array} res.locals.paths
-**/
-exports.path = require('./lib/middleware/path');
-
-/**
 Transform modules into urls
 @param {Array} res.locals.groups Array of module groups
 @param {String} res.locals.filter Filter
@@ -53,19 +32,6 @@ Transform modules into urls
 @return {Array} res.locals.urls
 **/
 exports.url = require('./lib/middleware/url');
-
-/**
-Transform urls into an ESI document
-@param {Array} res.locals.url
-@return {String} res.locals.body
-**/
-exports.esi = require('./lib/middleware/esi');
-
-/**
-Ends the request after setting the proper headers
-@param {String} res.locals.body
-**/
-exports.done = require('./lib/middleware/done');
 
 /**
 Create composite middleware.
@@ -101,27 +67,4 @@ exports.createComposite = function () {
         }
         run(0);
     };
-};
-
-/**
-Middleware that decodes combo urls into ESI documents.
-@method decodeToESI
-@param {Object} config Configuration object.
-    @param {Object} config.strategy Decoding strategy
-    @param {String} config.yuiBase Base url used to load YUI modules
-    @param {String} config.appBase Base url used to load application modules
-    @param {String} config.yuiBaseSecure https version of `yuiBase`
-    @param {String} config.appBaseSecure https version of `appBase`
-@return {Function} Composite middleware that decodes combo urls into ESI docs.
-**/
-exports.decodeToESI = function (config) {
-    return exports.createComposite([
-        exports.init(config),
-        exports.context(config),
-        exports.decode(config),
-        exports.validate(config),
-        exports.url(config),
-        exports.esi(config),
-        exports.done(config)
-    ]);
 };

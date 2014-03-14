@@ -1,7 +1,0 @@
-{{#each urls}}<esi:try>
-  <esi:attempt>
-    <esi:include src="{{this}}"/>
-  </esi:attempt>
-  <esi:except>{{../esiExcept}}</esi:except>
-</esi:try>
-{{/each}}
