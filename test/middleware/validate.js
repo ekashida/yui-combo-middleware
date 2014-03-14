@@ -18,7 +18,7 @@ suite.addBatch({
         topic: function () {
             var mock = generateMocks();
 
-            mock.req.comboSecure = true;
+            mock.req.secure = true;
 
             mock.res.locals.groups = [
                 {
@@ -38,7 +38,7 @@ suite.addBatch({
                 mock: mock
             };
         },
-        'the validator should not pass an error': function (o) {
+        'an error should be passed to next()': function (o) {
             var middleware = o.middleware,
                 req = o.mock.req,
                 res = o.mock.res;
@@ -52,7 +52,7 @@ suite.addBatch({
         topic: function () {
             var mock = generateMocks();
 
-            mock.req.comboSecure = true;
+            mock.req.secure = true;
 
             mock.res.locals.groups = [
                 {
@@ -81,6 +81,34 @@ suite.addBatch({
                 assert(err instanceof Error);
             });
         }
+    }
+});
+
+suite.addBatch({
+    'given a request with a valid yui version': {
+        topic: function () {
+            var mock = generateMocks();
+
+            mock.res.locals.groups = [{
+                modules: ['foo', 'bar'],
+                name: 'core',
+                version: '3.16.0'
+            }];
+
+            return {
+                middleware: mid(),
+                mock: mock
+            };
+        },
+        'an error should not be passed to next()': function (o) {
+            var middleware = o.middleware,
+                req = o.mock.req,
+                res = o.mock.res;
+
+            middleware(req, res, function (err) {
+                assert(!(err instanceof Error));
+            });
+        }
     },
     'given a request with an invalid yui version': {
         topic: function () {
@@ -104,6 +132,34 @@ suite.addBatch({
 
             middleware(req, res, function (err) {
                 assert(err instanceof Error);
+            });
+        }
+    }
+});
+
+suite.addBatch({
+    'given a request with a valid gallery version': {
+        topic: function () {
+            var mock = generateMocks();
+
+            mock.res.locals.groups = [{
+                modules: ['foo', 'bar'],
+                name: 'gallery',
+                version: 'gallery-2014.02.21'
+            }];
+
+            return {
+                middleware: mid(),
+                mock: mock
+            };
+        },
+        'an error should not be passed to next()': function (o) {
+            var middleware = o.middleware,
+                req = o.mock.req,
+                res = o.mock.res;
+
+            middleware(req, res, function (err) {
+                assert(!(err instanceof Error));
             });
         }
     },
