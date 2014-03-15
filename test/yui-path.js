@@ -48,7 +48,7 @@ suite.addBatch({
             assert.deepEqual(paths, [
                 '3.12.0/bar-baz/assets/skins/sam/bar-baz.css',
                 '3.12.0/hoge_piyo/assets/skins/sam/hoge_piyo.css',
-                '3.12.0/hoge--hoge/assets/skins/sam/hoge--hoge.css',
+                '3.12.0/hoge--hoge/assets/skins/sam/hoge--hoge.css'
             ]);
         }
     },
