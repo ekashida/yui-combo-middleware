@@ -14,12 +14,12 @@ function generateMock () {
 }
 
 var strategy = {
-    decode: function (o, callback) {
-        callback(null, {
-            groups: [o.path, o.query, 'groups'].join('+'),
-            type:   [o.path, o.query, 'type'].join('+'),
-            filter: [o.path, o.query, 'filter'].join('+')
-        });
+    decode: function (path, query) {
+        return {
+            groups: [path, query, 'groups'].join('+'),
+            type:   [path, query, 'type'].join('+'),
+            filter: [path, query, 'filter'].join('+')
+        };
     }
 };
 
