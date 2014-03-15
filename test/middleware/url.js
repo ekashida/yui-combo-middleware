@@ -48,7 +48,7 @@ suite.addBatch({
 
             middleware(req, res, next);
 
-            assert.equal(res.locals.urls.length, 2);
+            assert.strictEqual(res.locals.urls.length, 2);
             assert.deepEqual(res.locals.urls, [
                 'http://yui.yahooapis.com/3.12.0/build/hoge/filter/type',
                 'http://yui.yahooapis.com/3.12.0/build/piyo/filter/type'
@@ -95,14 +95,14 @@ suite.addBatch({
 
             middleware(req, res, next);
 
-            assert.equal(res.locals.urls.length, 2);
+            assert.strictEqual(res.locals.urls.length, 2);
             assert.deepEqual(res.locals.urls, [
                 'http://yuibase.com/3.12.0/build/hoge/filter/type',
                 'http://yuibase.com/3.12.0/build/piyo/filter/type'
             ]);
         },
         '(secure) the base is set to the value of `yuiBase`': function (middleware) {
-            req = { comboSecure: true };
+            req = { secure: true };
             res = {
                 locals: {
                     filter: 'filter',
@@ -117,7 +117,7 @@ suite.addBatch({
 
             middleware(req, res, next);
 
-            assert.equal(res.locals.urls.length, 2);
+            assert.strictEqual(res.locals.urls.length, 2);
             assert.deepEqual(res.locals.urls, [
                 'http://yuibase.com/3.12.0/build/hoge/filter/type',
                 'http://yuibase.com/3.12.0/build/piyo/filter/type'
@@ -147,14 +147,14 @@ suite.addBatch({
 
             middleware(req, res, next);
 
-            assert.equal(res.locals.urls.length, 2);
+            assert.strictEqual(res.locals.urls.length, 2);
             assert.deepEqual(res.locals.urls, [
                 'http://yuibase.com/3.12.0/build/hoge/filter/type',
                 'http://yuibase.com/3.12.0/build/piyo/filter/type'
             ]);
         },
         '(secure) the base is set to the value of `yuiBaseSecure`': function (middleware) {
-            req = { comboSecure: true };
+            req = { secure: true };
             res = {
                 locals: {
                     filter: 'filter',
@@ -169,7 +169,7 @@ suite.addBatch({
 
             middleware(req, res, next);
 
-            assert.equal(res.locals.urls.length, 2);
+            assert.strictEqual(res.locals.urls.length, 2);
             assert.deepEqual(res.locals.urls, [
                 'https://yuibasesecure.com/3.12.0/build/hoge/filter/type',
                 'https://yuibasesecure.com/3.12.0/build/piyo/filter/type'
@@ -189,7 +189,6 @@ suite.addBatch({
                     filter: 'filter',
                     type: 'type',
                     groups: [{
-                        name: 'root',
                         version: 'foo-bar',
                         modules: ['baz']
                     }]
@@ -198,13 +197,11 @@ suite.addBatch({
 
             middleware(req, res, next);
 
-            assert.equal(res.locals.urls.length, 1);
-            assert.deepEqual(res.locals.urls, [
-                'http://appbase.com/foo-bar/baz/filter/type'
-            ]);
+            assert.strictEqual(res.locals.urls.length, 1, 'unexpected number of urls');
+            assert.strictEqual(res.locals.urls[0], 'http://appbase.com/foo-bar/baz.type');
         },
         '(secure) the base is set to the value of `appBase`': function (middleware) {
-            req = { comboSecure: true };
+            req = { secure: true };
             res = {
                 locals: {
                     filter: 'filter',
@@ -219,10 +216,8 @@ suite.addBatch({
 
             middleware(req, res, next);
 
-            assert.equal(res.locals.urls.length, 1);
-            assert.deepEqual(res.locals.urls, [
-                'http://appbase.com/foo-bar/baz/filter/type'
-            ]);
+            assert.strictEqual(res.locals.urls.length, 1);
+            assert.strictEqual(res.locals.urls[0], 'http://appbase.com/foo-bar/baz.type');
         }
     },
     'given a middleware configured with both `appBase` and `appBaseSecure`': {
@@ -239,7 +234,6 @@ suite.addBatch({
                     filter: 'filter',
                     type: 'type',
                     groups: [{
-                        name: 'root',
                         version: '4.0.0',
                         modules: ['hoge', 'piyo']
                     }]
@@ -248,20 +242,19 @@ suite.addBatch({
 
             middleware(req, res, next);
 
-            assert.equal(res.locals.urls.length, 2);
+            assert.strictEqual(res.locals.urls.length, 2);
             assert.deepEqual(res.locals.urls, [
-                'http://appbase.com/4.0.0/hoge/filter/type',
-                'http://appbase.com/4.0.0/piyo/filter/type'
+                'http://appbase.com/4.0.0/hoge.type',
+                'http://appbase.com/4.0.0/piyo.type'
             ]);
         },
         '(secure) the base is set to the value of `appBaseSecure`': function (middleware) {
-            req = { comboSecure: true };
+            req = { secure: true };
             res = {
                 locals: {
                     filter: 'filter',
                     type: 'type',
                     groups: [{
-                        name: 'root',
                         version: '3.12.0',
                         modules: ['hoge', 'piyo']
                     }]
@@ -270,10 +263,10 @@ suite.addBatch({
 
             middleware(req, res, next);
 
-            assert.equal(res.locals.urls.length, 2);
+            assert.strictEqual(res.locals.urls.length, 2);
             assert.deepEqual(res.locals.urls, [
-                'https://appbasesecure.com/3.12.0/hoge/filter/type',
-                'https://appbasesecure.com/3.12.0/piyo/filter/type'
+                'https://appbasesecure.com/3.12.0/hoge.type',
+                'https://appbasesecure.com/3.12.0/piyo.type'
             ]);
         }
     },
@@ -292,7 +285,6 @@ suite.addBatch({
                     type: 'type',
                     groups: [
                         {
-                            name: 'path',
                             version: 'kamen/rider',
                             modules: ['wizard-min', 'fourze', 'w-debug', 'o-s']
                         }
@@ -302,35 +294,30 @@ suite.addBatch({
 
             middleware(req, res, next);
 
-            assert.equal(res.locals.urls.length, 4);
+            assert.strictEqual(res.locals.urls.length, 4);
             assert.deepEqual(res.locals.urls, [
                 'http://appbase.com/kamen/rider/wizard-min.type',
                 'http://appbase.com/kamen/rider/fourze.type',
                 'http://appbase.com/kamen/rider/w-debug.type',
-                'http://appbase.com/kamen/rider/o-s.type',
+                'http://appbase.com/kamen/rider/o-s.type'
             ]);
         },
-        'deprecated path module groups are decoded as expected': function (middleware) {
+        'absolute path module groups are decoded as expected': function (middleware) {
             req = {};
             res = {
                 locals: {
-                    filter: 'filter',
                     type: 'type',
                     groups: [
                         {
-                            name: 'path',
                             modules: ['kamen/rider/wizard-min']
                         },
                         {
-                            name: 'path',
                             modules: ['kamen/rider/fourze']
                         },
                         {
-                            name: 'path',
                             modules: ['kamen/rider/w-debug']
                         },
                         {
-                            name: 'path',
                             modules: ['kamen/rider/o-s']
                         }
                     ]
@@ -339,12 +326,12 @@ suite.addBatch({
 
             middleware(req, res, next);
 
-            assert.equal(res.locals.urls.length, 4);
+            assert.strictEqual(res.locals.urls.length, 4);
             assert.deepEqual(res.locals.urls, [
                 'http://appbase.com/kamen/rider/wizard-min.type',
                 'http://appbase.com/kamen/rider/fourze.type',
                 'http://appbase.com/kamen/rider/w-debug.type',
-                'http://appbase.com/kamen/rider/o-s.type',
+                'http://appbase.com/kamen/rider/o-s.type'
             ]);
         }
     }
