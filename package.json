@@ -1,6 +1,6 @@
 {
   "name": "yui-combo-middleware",
-  "version": "0.3.4",
+  "version": "1.0.0",
   "description": "Middleware used to decode combo requests",
   "author": "Eugene Kashida <ekashida@gmail.com>",
   "main": "index.js",
