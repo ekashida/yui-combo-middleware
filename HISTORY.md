@@ -5,7 +5,7 @@ Change History
 ------
 
 
-1.0.1 (2014-03-25)
+1.1.0 (2014-03-25)
 ------------------
 
 - modify hash module group url format to encode hash length as part of module hash
