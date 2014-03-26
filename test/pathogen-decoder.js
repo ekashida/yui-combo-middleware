@@ -6,7 +6,7 @@ var vows        = require('vows'),
 suite.addBatch({
     'when decoding a hash module group with module names of length 1': {
         topic: function () {
-            return strategy.decode('/1+nobi/shizu+abcde.debug.js');
+            return strategy.decode('/nobi/shizu+1xabcde.debug.js');
         },
         'module group is decoded as expected': function (decoded) {
             var group   = decoded.groups[0],
@@ -29,7 +29,7 @@ suite.addBatch({
 suite.addBatch({
     'when decoding a hash module group with module names of length 3': {
         topic: function () {
-            return strategy.decode('/3+nobi/dora+aaabbbcccdddeee.js');
+            return strategy.decode('/nobi/dora+3xaaabbbcccdddeee.js');
         },
         'module group is decoded as expected': function (decoded) {
             var group   = decoded.groups[0],
@@ -52,7 +52,7 @@ suite.addBatch({
 suite.addBatch({
     'when decoding two hash module groups with module name lengths of 2 and 4': {
         topic: function () {
-            return strategy.decode('/4+nobi/dora+aaaabbbbccccddddeeee;2+nobi/shizu+xxyyzz.raw.js');
+            return strategy.decode('/nobi/dora+4xaaaabbbbccccddddeeee;nobi/shizu+2x44dd00.raw.js');
         },
         'module groups are decoded as expected': function (decoded) {
             var group,
@@ -80,7 +80,7 @@ suite.addBatch({
             assert.strictEqual(modules.length, 3, 'unexpected number of modules');
             assert.strictEqual(group.version, 'nobi/shizu', 'unexpected version');
 
-            ['xx', 'yy', 'zz'].forEach(function (name, index) {
+            ['44', 'dd', '00'].forEach(function (name, index) {
                 assert.strictEqual(modules[index], name, 'unexpected module name');
             });
         }
