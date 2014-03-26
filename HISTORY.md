@@ -9,7 +9,6 @@ Change History
 ------------------
 
 - modify hash module group url format to encode hash length as part of module hash
-- append host via info to the tail of the via header instead of the head
 
 
 1.0.0 (2014-03-14)
